@@ -64,5 +64,4 @@ class NewTopicTests(TestCase):
         new_topic_url = reverse('new_topic',kwargs={'pk':1})
         board_topics_url = reverse('board_topics',kwargs={'pk':1})
         response = self.client.get(new_topic_url)
-        print(response.content)
         self.assertContains(response,'href="{0}"'.format(board_topics_url))

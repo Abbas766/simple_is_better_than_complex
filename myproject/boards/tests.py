@@ -3,6 +3,7 @@ from django.urls import resolve
 from django.test import TestCase
 from .views import home, board_topics,new_topic
 from .models import Board
+from .forms import NewTopicForm
 
 
 
@@ -65,3 +66,19 @@ class NewTopicTests(TestCase):
         board_topics_url = reverse('board_topics',kwargs={'pk':1})
         response = self.client.get(new_topic_url)
         self.assertContains(response,'href="{0}"'.format(board_topics_url))
+
+    def test_contains_form(self):
+        url = reverse('new_topic',kwargs={'pk':1})
+        response = self.client.get(url)
+        form = response.context.get('form')
+        self.assertIsInstance(form,NewTopicForm)
+
+    def test_new_topic_invalid_post_data(self):
+        '''
+        Invalid post data shouldnot redirect but show form with validation errors
+        '''
+        url = reverse('new_topic',kwargs={'pk':1})
+        response = self.client.post(url,{})
+        form = response.context.get('form')
+        self.assertEquals(response.status_code,200)
+        self.assertTrue(form.errors)

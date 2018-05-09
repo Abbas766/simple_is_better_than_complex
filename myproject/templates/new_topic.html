@@ -1,5 +1,7 @@
 {% extends 'base.html'%}
 
+{% load widget_tweaks %}
+
 {% block title%} Start a new topic {% endblock%}
 
 {%block breadcrumb %}
@@ -9,5 +11,9 @@
 {%endblock%}
 
 {% block content %}
-
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% include 'includes/form.html' %}
+        <button type="submit" class="btn btn-success">Post</button>
+    </form>  
 {% endblock %}
